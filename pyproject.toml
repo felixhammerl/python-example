@@ -1,0 +1,65 @@
+[tool.poetry]
+package-mode = true
+name = "example"
+version = "0.1.0"
+description = ""
+authors = ["Felix Hammerl <felix.hammerl@gmail.com>"]
+readme = "README.md"
+packages = [
+    { include = "example" },
+]
+exclude = [
+    ".*",
+    "*.pyc",
+    "__pycache__",
+    "dist",
+    "build",
+    "tests",
+    "Makefile",
+    "README.md",
+]
+
+[tool.poetry.dependencies]
+python = "^3.12"
+aws-lambda-powertools = "^2.43.1"
+dacite = "^1.8.1"
+python-json-logger = "^2.0.7"
+structlog = "^24.4.0"
+requests = "^2.32.3"
+
+[tool.poetry.group.dev.dependencies]
+boto3 = "^1.35.28"
+boto3-stubs = {version = "^1.35.21", extras = ["full"]}
+pre-commit = "^3.8.0"
+pytest = "^8.3.3"
+pytest-mock = "^3.14.0"
+moto = "^5.0.14"
+pyhamcrest = "^2.1.0"
+black = "^24.8.0"
+matchmock = "^2.1.1"
+pudb = "^2024.1.2"
+pytest-pudb = "^0.7.0"
+isort = "^5.13.2"
+docformatter = "^1.7.5"
+autoflake = "^2.3.1"
+bandit = "^1.7.10"
+pylint = "^3.3.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+include = '\.pyi?$'
+
+[tool.isort]
+profile = "black"
+
+[tool.docformatter]
+in-place = true
+black = true
+recursive = true
+
+[tool.pylint.options]
+max-line-length = 120
+disable = "useless-object-inheritance"

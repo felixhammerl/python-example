@@ -1,0 +1,81 @@
+name: Pipeline
+on:
+  push:
+  workflow_dispatch:
+
+env:
+  AWS_REGION: us-east-1
+  PIPENV_VENV_IN_PROJECT: true
+
+jobs:
+  test-unit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    env:
+      STAGE: local
+
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v2
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Poetry
+        run: |
+          curl -sSL https://install.python-poetry.org | python - -y
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_wrapper: false
+
+      - name: Check format
+        run: make test-format
+
+      - name: Check quality
+        run: make test-quality
+
+      - name: Unit test
+        run: make test-unit
+
+  deploy:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    needs: test-unit
+    timeout-minutes: 15
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v2
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Poetry
+        run: |
+          curl -sSL https://install.python-poetry.org | python - -y
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_wrapper: false
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: ${{env.AWS_REGION}}
+          role-to-assume: ${{ secrets.CI }}
+          role-duration-seconds: 900
+          role-skip-session-tagging: true
+
+      - name: Deploy
+        run: make deploy

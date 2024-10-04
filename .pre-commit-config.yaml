@@ -1,0 +1,30 @@
+repos:
+    - repo: local
+      hooks:
+          - id: format
+            name: Formatting test
+            entry: make test-format
+            language: system
+            types_or: [shell, terraform, python]
+            pass_filenames: false
+            verbose: true
+            stages: [commit]
+            additional_dependencies: []
+          - id: quality
+            name: Code Quality test
+            entry: make test-quality
+            language: system
+            types_or: [python]
+            pass_filenames: false
+            verbose: true
+            stages: [commit]
+            additional_dependencies: []
+          - id: unittest
+            name: Unit test
+            entry: make test-unit
+            language: system
+            types_or: [python]
+            pass_filenames: false
+            verbose: true
+            stages: [commit]
+            additional_dependencies: []

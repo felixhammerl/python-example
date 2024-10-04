@@ -1,0 +1,11 @@
+{
+    "python.envFile": "${workspaceFolder}/.local.dec.env",
+    "python.testing.pytestArgs": [
+        "tests/unit"
+    ],
+    "python.testing.unittestEnabled": false,
+    "python.testing.pytestEnabled": true,
+    "shellcheck.ignorePatterns": {
+        ".env*": true
+    }
+}
