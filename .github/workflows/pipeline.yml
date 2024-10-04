@@ -28,10 +28,22 @@ jobs:
         run: |
           curl -sSL https://install.python-poetry.org | python - -y
 
+      - name: Update package index
+        run: sudo apt update
+
+      - name: Install OS dependencies
+        run: sudo apt install -y make shellcheck gnupg bash sops
+
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
         with:
           terraform_wrapper: false
+
+      - name: Install dependencies
+        run: poetry install --with dev
+
+      - name: Import GPG key
+        run: echo "${{ secrets.PGP_KEY }}" | gpg --import -
 
       - name: Check format
         run: make test-format
