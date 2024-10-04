@@ -28,22 +28,25 @@ jobs:
         run: |
           curl -sSL https://install.python-poetry.org | python - -y
 
+      - name: Setup SOPS
+        uses: nhedger/setup-sops@v2
+
       - name: Update package index
         run: sudo apt update
 
       - name: Install OS dependencies
-        run: sudo apt install -y make shellcheck gnupg bash sops
+        run: sudo apt install -y make shellcheck gnupg bash
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
         with:
           terraform_wrapper: false
 
-      - name: Install dependencies
-        run: poetry install --with dev
-
       - name: Import GPG key
         run: echo "${{ secrets.PGP_KEY }}" | gpg --import -
+
+      - name: Install dependencies
+        run: poetry install --with dev
 
       - name: Check format
         run: make test-format
@@ -76,10 +79,25 @@ jobs:
         run: |
           curl -sSL https://install.python-poetry.org | python - -y
 
+      - name: Setup SOPS
+        uses: nhedger/setup-sops@v2
+
+      - name: Update package index
+        run: sudo apt update
+
+      - name: Install OS dependencies
+        run: sudo apt install -y make shellcheck gnupg bash
+
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
         with:
           terraform_wrapper: false
+
+      - name: Import GPG key
+        run: echo "${{ secrets.PGP_KEY }}" | gpg --import -
+
+      - name: Install dependencies
+        run: poetry install
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
