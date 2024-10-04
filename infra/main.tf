@@ -29,6 +29,9 @@ module "example" {
   zip_path        = "${path.root}/../build/lambda.zip"
   handler         = "example/handler/example.do_stuff"
   iam_policy_json = data.aws_iam_policy_document.example.json
+  env = {
+    STAGE = var.stage
+  }
 }
 
 module "sfn" {

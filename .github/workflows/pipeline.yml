@@ -65,6 +65,9 @@ jobs:
       id-token: write
       contents: read
 
+    env:
+      STAGE: prod
+
     steps:
       - name: Check out repository code
         uses: actions/checkout@v4

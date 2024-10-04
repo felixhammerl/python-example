@@ -77,15 +77,16 @@ encrypt-secrets:
 	rm .prod.dec.env
 
 terraform-plan:
-	cd infra && terraform init -input=false -backend-config=../backend.hcl
-	cd infra && terraform plan
+	cd infra && terraform init -input=false -backend-config=../backend.$(STAGE).hcl
+	cd infra && terraform plan -out=tfplan -var-file="../vars.$(STAGE).tfvars"
+	cd infra && terraform show -json tfplan | jq
 
 terraform-apply:
-	cd infra && terraform init -input=false -backend-config=../backend.hcl
-	cd infra && terraform apply -auto-approve
+	cd infra && terraform init -input=false -backend-config=../backend.$(STAGE).hcl
+	cd infra && terraform apply -auto-approve -var-file="../vars.$(STAGE).tfvars"
 
 terraform-destroy:
-	cd infra && terraform init -input=false -backend-config=../backend.hcl
+	cd infra && terraform init -input=false -backend-config=../backend.$(STAGE).hcl
 	cd infra && terraform destroy
 
 backend: backend-plan backend-apply
