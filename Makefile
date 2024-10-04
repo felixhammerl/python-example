@@ -7,7 +7,7 @@ all: format test deploy
 
 test: test-format test-quality test-unit
 
-deploy: package terraform-apply
+deploy: clean package terraform-apply
 
 install:
     ifeq ($(shell pyenv versions --bare | grep 3.12 | wc -l), 0)
@@ -22,8 +22,10 @@ install:
 clean:
 	rm -rf dist build
 	find . -type f -name '*.py[co]' -delete -o -type d -name __pycache__ -delete
-	poetry env remove --all
 	find . | grep -E "(/__pycache__$|\.pyc$|\.pyo$)" | xargs -r rm -rf
+
+clear-poetry-cache:
+	poetry env remove --all
 	poetry cache clear pypi --all
 
 format:
@@ -101,13 +103,10 @@ backend-destroy:
 	cd infra/.tf-backend && terraform destroy -state=backend.tfstate
 
 package:
-	rm -rf dist build
 	poetry install --only main --sync
 	poetry build
 	poetry run pip install --upgrade -t build dist/*.whl
 	rm -rf dist
 	find build -type f -name '*.py[co]' -delete -o -type d -name __pycache__ -delete
 	cd build && zip -r -q lambda.zip .
-	find build -type f -not -name 'lambda.zip' -delete
-	find build -type d -not -name 'lambda.zip' -delete
 
