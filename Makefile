@@ -1,4 +1,5 @@
 SHELL := /usr/bin/env bash
+STAGE ?= local
 
 .DEFAULT_GOAL := all
 .PHONY: all
