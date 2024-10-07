@@ -1,0 +1,23 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "decrypt-secrets",
+      "type": "shell",
+      "command": "make decrypt-secrets",
+      "hide": true,
+      "presentation": {
+        "reveal": "never"
+      }
+    },
+    {
+      "label": "delete-secrets",
+      "type": "shell",
+      "command": "make delete-secrets",
+      "hide": true,
+      "presentation": {
+        "reveal": "never"
+      }
+    }
+  ]
+}

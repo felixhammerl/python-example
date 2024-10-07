@@ -73,9 +73,14 @@ encrypt-secrets:
 	sops --encrypt .local.dec.env > .local.enc.env
 	sops --encrypt .dev.dec.env > .dev.enc.env
 	sops --encrypt .prod.dec.env > .prod.enc.env
-	rm .local.dec.env
-	rm .dev.dec.env
-	rm .prod.dec.env
+	rm -f .local.dec.env
+	rm -f .dev.dec.env
+	rm -f .prod.dec.env
+
+delete-secrets:
+	rm -f .local.dec.env
+	rm -f .dev.dec.env
+	rm -f .prod.dec.env
 
 terraform-plan:
 	cd infra && terraform init -input=false -backend-config=../backend.$(STAGE).hcl

@@ -2,37 +2,18 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Dev",
-            "type": "debugpy",
-            "request": "launch",
-            "console": "integratedTerminal",
-            "envFile": "${workspaceFolder}/.dev.dec.env",
-            "module": "cicd_metadata.handler.gitlab"
-        },
-        {
-            "name": "Test (Unit, Marked Only)",
-            "type": "debugpy",
-            "request": "launch",
-            "console": "integratedTerminal",
-            "envFile": "${workspaceFolder}/.local.dec.env",
-            "module": "pytest",
-            "args": [
-                "-m only",
-                "--disable-pytest-warnings",
-                "tests/unit"
-            ]
-        },
-        {
             "name": "Test (Unit)",
             "type": "debugpy",
             "request": "launch",
             "console": "integratedTerminal",
-            "envFile": "${workspaceFolder}/.local.dec.env",
             "module": "pytest",
+            "envFile": "${workspaceFolder}/.local.dec.env",
+            "preLaunchTask": "decrypt-secrets",
+            "postDebugTask": "delete-secrets",
             "args": [
                 "--disable-pytest-warnings",
                 "tests/unit"
             ]
-        },
+        }
     ]
 }
