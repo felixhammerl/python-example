@@ -44,7 +44,6 @@ docformatter = "^1.7.5"
 autoflake = "^2.3.1"
 bandit = "^1.8.3"
 pylint = "^3.3.4"
-poethepoet = "^0.33.0"
 
 [build-system]
 requires = ["poetry-core"]
