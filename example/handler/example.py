@@ -5,7 +5,7 @@ from example.util.logger import LogEvents, get_logger
 log = get_logger()
 
 
-def do_stuff(_, __):
+def do_stuff(event, __):
     """This handler serves to illustrate how the code would look.
 
     Args:
@@ -13,6 +13,7 @@ def do_stuff(_, __):
         __ (Context): Unused, only present to match the Lambda handler signature.
     """
 
+    _ = event.get("foo")
     log.info(event=LogEvents.EXAMPLE)
     log.info(event=LogEvents.EXAMPLE_SUCCESSFUL)
     return "Hello, World!"

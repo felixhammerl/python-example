@@ -36,9 +36,8 @@ Secrets should never be stored on disk in plain text in regular usage. This repo
 Here is how you interact with secrets:
 
 - `make import-gpg-keys`: Imports the GPG key from the `.gpg` directory.
-- `make decrypt-secrets`: Decrypts secrets files into a gitignored file, in case changes need to be made.
-- `make encrypt-secrets`: Encrypts the secrets files and removes the plain text equivalents.
-- `make rotate-secrets`: Re-encrypts secrets files. This is useful when a new team member joins or leaves.
+- `sops edit <FILE>`: This allows you to create or edit files
+- `sops updatekeys <FILE>`: command uses the .sops.yaml configuration file to update (add or remove) the corresponding secrets in the encrypted file. [Link to documentation](https://github.com/getsops/sops?tab=readme-ov-file#adding-and-removing-keys)
 
 In regular development, the secrets are to be injected into the running process or piped around. The rest should be handled by automation.
 

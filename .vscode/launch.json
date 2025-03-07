@@ -8,10 +8,7 @@
             "console": "integratedTerminal",
             "module": "pytest",
             "envFile": "${workspaceFolder}/.local.dec.env",
-            "preLaunchTask": "decrypt-secrets",
-            "postDebugTask": "delete-secrets",
             "args": [
-                "--disable-pytest-warnings",
                 "tests/unit"
             ]
         }

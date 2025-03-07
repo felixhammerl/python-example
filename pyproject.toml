@@ -64,3 +64,6 @@ recursive = true
 [tool.pylint.options]
 max-line-length = 120
 disable = "useless-object-inheritance"
+
+[tool.pytest.ini_options]
+addopts = "-p no:warnings"

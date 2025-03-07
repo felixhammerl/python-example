@@ -1,0 +1,9 @@
+{
+  "suggest.noselect": false,
+  "python.venvPath": "./",
+  "python.pythonPath": ".venv/bin/python",
+  "pyright.testing.provider": "pytest",
+  "python.formatting.provider": "black",
+  "python.formatting.blackPath": ".venv/bin/black",
+  "coc.preferences.formatOnSave": true
+}

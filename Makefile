@@ -50,15 +50,15 @@ clear-poetry-cache:
 	poetry cache clear pypi --all
 
 format:
-	find . -name "*.tf" -not -path "*.terraform*" | xargs -r terraform fmt
+	find . \( -path "*/.terraform" -o -path "*/.venv" \) -prune -o -name "*.tf" -type f -print | xargs -r terraform fmt
 	-poetry run docformatter --config pyproject.toml .
 	poetry run autoflake --in-place --recursive --remove-all-unused-imports .
 	poetry run isort . --profile black
 	poetry run black .
 
 test-format:
-	find . -name "*.sh" | xargs -r shellcheck
-	find . -name "*.tf" -not -path "*.terraform*" | xargs -r terraform fmt -check
+	find . \( -path "*/.terraform" -o -path "*/.venv" \) -prune -o -name "*.sh" -type f -print | xargs -r shellcheck
+	find . \( -path "*/.terraform" -o -path "*/.venv" \) -prune -o -name "*.tf" -type f -print | xargs -r terraform fmt -check
 	poetry run docformatter --config pyproject.toml --check .
 	poetry run autoflake --recursive --check .
 	poetry run isort . --check-only --profile black
@@ -71,36 +71,10 @@ test-quality:
 	poetry run pylint --rcfile pyproject.toml tests
 
 test-unit:
-	sops exec-env .local.enc.env 'poetry run pytest tests/unit --disable-pytest-warnings'
-
-run-example-dev:
-	sops exec-env .dev.enc.env 'poetry run python -m example.handler.example'
-
-run-example-prod:
-	sops exec-env .prod.enc.env 'poetry run python -m example.handler.example'
+	poetry run pytest tests/unit --disable-pytest-warnings
 
 import-gpg-keys:
 	find .gpg -name "*.asc" | xargs cat - | gpg --import -
-
-rotate-secrets: decrypt-secrets encrypt-secrets
-
-decrypt-secrets:
-	sops --decrypt .local.enc.env > .local.dec.env
-	sops --decrypt .dev.enc.env > .dev.dec.env
-	sops --decrypt .prod.enc.env > .prod.dec.env
-
-encrypt-secrets:
-	sops --encrypt .local.dec.env > .local.enc.env
-	sops --encrypt .dev.dec.env > .dev.enc.env
-	sops --encrypt .prod.dec.env > .prod.enc.env
-	rm -f .local.dec.env
-	rm -f .dev.dec.env
-	rm -f .prod.dec.env
-
-delete-secrets:
-	rm -f .local.dec.env
-	rm -f .dev.dec.env
-	rm -f .prod.dec.env
 
 terraform-plan:
 	cd infra && terraform init -input=false -backend-config=../backend.$(STAGE).hcl

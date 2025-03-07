@@ -1,5 +1,4 @@
 {
-    "python.envFile": "${workspaceFolder}/.local.dec.env",
     "python.testing.pytestArgs": [
         "tests/unit"
     ],
