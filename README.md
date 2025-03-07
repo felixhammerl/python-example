@@ -63,6 +63,8 @@ This uses `sops` to decrypt the `.env` file and injects the secrets into the run
 
 # Build & Deployment
 
+To make sure you're running on the proper version of Terraform, run: `make terraform-version`
+
 The backend for the Terraform state is stored in an S3 bucket and a DynamoDB lock. To manage the backend, you can use the following commands:
 
 - `make backend-plan`: Creates the backend plan for the Terraform state.

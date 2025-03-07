@@ -76,6 +76,9 @@ test-unit:
 import-gpg-keys:
 	find .gpg -name "*.asc" | xargs cat - | gpg --import -
 
+terraform-version:
+	cd infra && tfenv install && tfenv use
+
 terraform-plan:
 	cd infra && terraform init -input=false -backend-config=../backend.$(STAGE).hcl
 	cd infra && terraform plan -out=tfplan -var-file="../vars.$(STAGE).tfvars"
