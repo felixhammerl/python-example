@@ -50,19 +50,27 @@ clear-poetry-cache:
 	poetry cache clear pypi --all
 
 format:
-	find . \( -path "*/.terraform" -o -path "*/.venv" \) -prune -o -name "*.tf" -type f -print | xargs -r terraform fmt
-	-poetry run docformatter --config pyproject.toml .
-	poetry run autoflake --in-place --recursive --remove-all-unused-imports .
-	poetry run isort . --profile black
-	poetry run black .
+	find . \( -path "*/.terraform" -o -path "*/build" -o -path "*/.venv" \) -prune -o -name "*.tf" -type f -print | xargs -r terraform fmt
+	-poetry run docformatter --config pyproject.toml example
+	-poetry run docformatter --config pyproject.toml tests
+	poetry run autoflake --in-place --recursive example
+	poetry run autoflake --in-place --recursive tests
+	poetry run isort example --profile black
+	poetry run isort tests --profile black
+	poetry run black example
+	poetry run black tests
 
 test-format:
-	find . \( -path "*/.terraform" -o -path "*/.venv" \) -prune -o -name "*.sh" -type f -print | xargs -r shellcheck
-	find . \( -path "*/.terraform" -o -path "*/.venv" \) -prune -o -name "*.tf" -type f -print | xargs -r terraform fmt -check
-	poetry run docformatter --config pyproject.toml --check .
-	poetry run autoflake --recursive --check .
-	poetry run isort . --check-only --profile black
-	poetry run black . --check
+	find . \( -path "*/.terraform" -o -path "*/build" -o -path "*/.venv" \) -prune -o -name "*.sh" -type f -print | xargs -r shellcheck
+	find . \( -path "*/.terraform" -o -path "*/build" -o -path "*/.venv" \) -prune -o -name "*.tf" -type f -print | xargs -r terraform fmt -check
+	poetry run docformatter --config pyproject.toml --check example
+	poetry run docformatter --config pyproject.toml --check tests
+	poetry run autoflake --recursive --check example
+	poetry run autoflake --recursive --check tests
+	poetry run isort example --check-only --profile black
+	poetry run isort tests --check-only --profile black
+	poetry run black example --check
+	poetry run black tests --check
 
 test-quality:
 	poetry run bandit -r example
