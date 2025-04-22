@@ -90,10 +90,7 @@ jobs:
       - name: Install OS dependencies
         run: sudo apt install -y make shellcheck gnupg bash
 
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v3
-        with:
-          terraform_wrapper: false
+      - uses: rhythmictech/actions-setup-tfenv@v0.0.2
 
       - name: Import GPG key
         run: echo "${{ secrets.PGP_KEY }}" | gpg --import -
@@ -108,6 +105,11 @@ jobs:
           role-to-assume: ${{ secrets.CI }}
           role-duration-seconds: 900
           role-skip-session-tagging: true
+
+      - name: Set tfenv version
+        run: |
+          tfenv install
+          tfenv use
 
       - name: Deploy
         run: make deploy
